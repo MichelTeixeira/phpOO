@@ -1,0 +1,13 @@
+{
+  "autoload":{
+    "psr-4":{
+      "Source\\":"src/Source",
+      "IFaces\\":"src/Source/IFaces",
+      "Tables\\":"src/Source/Tables",
+      "Services\\":"src/Source/Services"
+    }
+  },
+  "require": {
+    "pimple/pimple": "~3.0"
+  }
+}
