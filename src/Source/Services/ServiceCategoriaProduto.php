@@ -20,8 +20,14 @@ class ServiceCategoriaProduto implements IService
         $query = "SELECT *
                     FROM categoria_produto
                 ";
+        if($this->categoriaProduto->getId())
+            $query .= "WHERE categoria_produto.	id_categoria_planejamento = :id";
+
         $stmt = $this->db->prepare($query);
+        if($this->categoriaProduto->getId())
+            $stmt->bindValue(":id",$this->categoriaProduto->getId());
         $stmt->execute();
+
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     public function save()

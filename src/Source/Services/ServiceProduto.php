@@ -28,7 +28,7 @@ class ServiceProduto implements IService
                       ON produto.id_categoria_produto = categoria_produto.id_categoria_planejamento
                 ";
         if($this->produto->getId())
-            $query .= "WHERE produto.id_produto = ".$this->produto->getId();
+            $query .= "WHERE produto.id_produto = :id";
         $query .= "
                 ORDER BY categoria_produto.nome
                        , produto.nome
@@ -36,7 +36,10 @@ class ServiceProduto implements IService
                 ";
 
         $stmt = $this->db->prepare($query);
+        if($this->produto->getId())
+            $stmt->bindValue(":id",$this->produto->getId());
         $stmt->execute();
+
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     public function save()
@@ -49,36 +52,48 @@ class ServiceProduto implements IService
                         , valor
                         )
                   VALUES
-                       ( ".$this->produto->getIdCategoria()."
-                       , '".$this->produto->getNome()."'
-                       , '".$this->produto->getData()."'
-                       , ".str_replace(",", ".", str_replace(".", "", $this->produto->getValor()))."
+                       ( :idCategoria
+                       , :nome
+                       , :data
+                       , :valor
                        );
                 ";
+
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(":idCategoria",$this->produto->getIdCategoria());
+        $stmt->bindValue(":nome"       ,$this->produto->getNome());
+        $stmt->bindValue(":data"       ,$this->produto->getData());
+        $stmt->bindValue(":valor"      ,str_replace(",", ".", str_replace(".", "", $this->produto->getValor())));
         $stmt->execute();
     }
     public  function update()
     {
         $query = " UPDATE produto
-                      SET id_categoria_produto = ".$this->produto->getIdCategoria()."
-                        , nome = '".$this->produto->getNome()."'
-                        , data = '".$this->produto->getData()."'
-                        , valor = ".str_replace(",", ".", str_replace(".", "", $this->produto->getValor()))."
-                    WHERE id_produto = ".$this->produto->getId()."
-                        ;
+                      SET id_categoria_produto = :idCategoria
+                        , nome = :nome
+                        , data = :data
+                        , valor = :valor
+                    WHERE id_produto = :id ;
                 ";
+
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(":idCategoria",$this->produto->getIdCategoria());
+        $stmt->bindValue(":nome"       ,$this->produto->getNome());
+        $stmt->bindValue(":data"       ,$this->produto->getData());
+        $stmt->bindValue(":valor"      ,str_replace(",", ".", str_replace(".", "", $this->produto->getValor())));
+        $stmt->bindValue(":id"         ,$this->produto->getId());
         $stmt->execute();
     }
     public  function delete()
     {
         $query = " DELETE
                      FROM produto
-                    WHERE id_produto = ".$this->produto->getId()."
+                    WHERE id_produto = :id
                         ;
                 ";
+
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(":id",$this->produto->getId());
         $stmt->execute();
     }
 }
