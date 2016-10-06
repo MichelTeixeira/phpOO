@@ -2,15 +2,15 @@
 namespace Services;
 
 use IFaces\IService;
-use Source\Conn;
-use Tables\Produto;
+use IFaces\IConn;
+use IFaces\IProduto;
 
 class ServiceProduto implements IService
 {
     private $db;
     private $produto;
 
-    public function __construct(Conn $db, Produto $produto)
+    public function __construct(IConn $db, IProduto $produto)
     {
         $this->db = $db->connect();
         $this->produto = $produto;
