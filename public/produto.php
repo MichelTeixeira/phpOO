@@ -31,17 +31,6 @@ function validaCampo(objeto){
             msg = "Preencha o campo "+e[i].getAttribute("descricao")+"!";
             erro='S';
         }
-        
-        if(e[i].name == "Ano" && erro === 'N'){
-            if(isNaN(e[i].value)){
-                msg = "O campo "+e[i].getAttribute("descricao")+" deve ser preenchido somente com números!";
-                erro='S';
-            }
-            if(e[i].value<1970 || e[i].value>2014){
-                msg = "O campo "+e[i].getAttribute("descricao")+" deve ser preenchido entre os anos de 1970 e 2014!";
-                erro='S';
-            }
-        }
 
         if(erro=='S'){
             e[i].style.borderColor  = "#F00707";
